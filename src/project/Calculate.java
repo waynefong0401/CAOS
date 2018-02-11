@@ -15,15 +15,15 @@ public class Calculate {
 		for(Entry<Integer, List<Integer>> individualProcess:objProcess.processMap.entrySet())
 		{
 			List<Integer> processInfo = individualProcess.getValue();
-			for(int loopControl = 0; loopControl < objMemory.block.size();loopControl++)
+			for(Entry<Integer,List<Integer>> entry : objMemory.block.entrySet())
 			{
-				int blockSize = objMemory.block.get(loopControl).get(1);
+				int blockSize = entry.getValue().get(1);
 				if(processInfo.get(0) <= blockSize)
 				{
 					if(tempSize>blockSize)
 					{
 						tempSize = blockSize;
-						tempIndex = loopControl;
+						tempIndex = entry.getKey();
 					}
 				}
 			}
@@ -53,7 +53,6 @@ public class Calculate {
 			for(int loopControl = 0; loopControl < objMemory.block.size();loopControl++)
 			{
 				int blockSize = objMemory.block.get(loopControl).get(1);
-				//System.out.println("free block size : "+blockSize);
 				if(processInfo.get(0) <= blockSize)
 				{
 						tempIndex = loopControl;
@@ -83,8 +82,7 @@ public class Calculate {
 			List<Integer> processInfo = individualProcess.getValue();
 			for(int loopControl = 0; loopControl < objMemory.block.size();loopControl++)
 			{
-				int blockSize = objMemory.block.get(loopControl).get(1);
-				//System.out.println("free block size : "+blockSize);
+				int blockSize = objMemory.block.get(loopControl).get(1);	 
 				if(processInfo.get(0) <= blockSize)
 				{
 					if(tempSize<blockSize)
