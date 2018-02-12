@@ -5,6 +5,7 @@ import java.util.List;
 
 public class FCFS extends CPUScheduler
 {
+	List<Event> timeline;
     @Override
     public void process()
     {        
@@ -23,7 +24,7 @@ public class FCFS extends CPUScheduler
             }
         });
         
-        List<Event> timeline = this.getTimeline();
+        timeline = this.getTimeline();
         
         for (Row row : this.getRows())
         {
@@ -33,8 +34,8 @@ public class FCFS extends CPUScheduler
             }
             else
             {
-                Event event = timeline.get(timeline.size() - 1);
-                timeline.add(new Event(row.getProcessid(), event.getFinishTime(), event.getFinishTime() + row.getBurstTime()));
+               // Event event = timeline.get(timeline.size() - 1);
+                timeline.add(new Event(row.getProcessid(), row.getArrivalTime(), row.getArrivalTime() + row.getBurstTime()));
             }
         }
         

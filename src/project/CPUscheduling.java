@@ -57,7 +57,7 @@ public class CPUscheduling extends JFrame {
 	private CustomPanel chartPanel2;
 	private JLabel pavett, pavewt;
 	private JTextField priority;
-	
+	CPUresult temp ;
 	
 	
 	JPanel cards;
@@ -229,15 +229,16 @@ public class CPUscheduling extends JFrame {
 	                for (int i = 0; i < model.getRowCount(); i++)
 	                {
 	                    String process = (String) model.getValueAt(i, 0);
+	                    temp = new CPUresult(scheduler.getTimeline());
 	                    Row row = scheduler.getRow(process);
-	                    model.setValueAt(row.getWaitingTime(), i, 4);
-	                    model.setValueAt(row.getTurnaroundTime(), i, 5);
+	                    model.setValueAt(temp.event.get(i).getwaitingTime(), i, 4);
+	                    model.setValueAt(temp.event.get(i).getwaitingTime()+row.getBurstTime(), i, 5);
 	                }
-	                avett.setText(Double.toString(scheduler.getAverageTurnAroundTime()));
+	                avett.setText(Double.toString(temp.getAveTurnAroundTime()));
 	                //System.out.println(avett);
 	                //System.out.println(avewt);
 				
-				avewt.setText(Double.toString(scheduler.getAverageWaitingTime()));
+				avewt.setText(Double.toString(temp.getAveWaitingTime()));
 					
 					chartPanel.setTimeline(scheduler.getTimeline());
 					
@@ -494,6 +495,7 @@ public class CPUscheduling extends JFrame {
     {   
         private List<Event> timeline;
         
+        
         @Override
         protected void paintComponent(Graphics g)
         {
@@ -501,25 +503,57 @@ public class CPUscheduling extends JFrame {
             
             if (timeline != null)
             {
-//                int width = 30;
-                
-                for (int i = 0; i < timeline.size(); i++)
+            	CPUresult temp = new CPUresult(timeline);
+                List<Event> timelineTemp=temp.eventResult;
+                int anchor=30;
+                for (int i = 0; i < timelineTemp.size(); i++)
                 {
-                    Event event = timeline.get(i);
-                    int x = 30 * (i + 1);
+                	Event previousEvent;
+                	if(i==0)
+                		previousEvent = new Event("default",0,0);
+                	else
+                		previousEvent = timelineTemp.get(i-1);
+                	
+                    Event event = timelineTemp.get(i);
+                    System.out.print("previousEvent : "+previousEvent.getFinishTime()+previousEvent.getStartTime());
+                    System.out.print("event : "+event.getFinishTime()+event.getStartTime());
                     int y = 20;
-                    
-                    g.drawRect(x, y, 30, 30);
-                    g.setFont(new Font("Segoe UI", Font.BOLD, 13));
-                    g.drawString(event.getProcessid(), x + 10, y + 20);
-                    g.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-                    g.drawString(Integer.toString(event.getStartTime()), x - 5, y + 45);
-                    
-                    if (i == timeline.size() - 1)
+                    if(previousEvent.getFinishTime()!=event.getStartTime())
                     {
-                        g.drawString(Integer.toString(event.getFinishTime()), x + 27, y + 45);
+                    	System.out.print("got idle : "+previousEvent.getFinishTime());
+                    	g.drawRect(anchor, y, 30, 30);
+                        g.setFont(new Font("Segoe UI", Font.BOLD, 13));
+                        g.drawString("idle", anchor + 2, y + 20);
+                        g.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+                        g.drawString(Integer.toString(previousEvent.getFinishTime()), anchor - 5, y + 45);
+                        
+                        anchor+=30;
+                        
+                        g.drawRect(anchor, y, 30, 30);
+                        g.setFont(new Font("Segoe UI", Font.BOLD, 13));
+                        g.drawString(event.getProcessid(), anchor + 10, y + 20);
+                        g.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+                        g.drawString(Integer.toString(event.getStartTime()), anchor - 5, y + 45);
+                        if (i == timelineTemp.size() - 1)
+                        {
+                            g.drawString(Integer.toString(event.getFinishTime()), anchor + 27, y + 45);
+                        }
+                        anchor+=30;
                     }
+                    else
+                    {
+                    	g.drawRect(anchor, y, 30, 30);
+                    	g.setFont(new Font("Segoe UI", Font.BOLD, 13));
+                    	g.drawString(event.getProcessid(), anchor + 10, y + 20);
+                    	g.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+                    	g.drawString(Integer.toString(event.getStartTime()), anchor - 5, y + 45);
                     
+                    	if (i == timelineTemp.size() - 1)
+                    	{
+                    		g.drawString(Integer.toString(event.getFinishTime()), anchor + 27, y + 45);
+                    	}
+                    	anchor+=30;
+                    }
 //                    width += 30;
                 }
                 
