@@ -192,18 +192,6 @@ public class CPUscheduling extends JFrame {
 			btnNewButton.setBounds(52, 633, 194, 37);
 			panel.add(btnNewButton);
 			
-			JButton btnClearAllEntries = new JButton("Clear all input");
-			btnClearAllEntries.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					processid.setText("");
-					arrivaltime.setText("");
-					bursttime.setText("");
-				}
-			});
-			btnClearAllEntries.setFont(new Font("Times New Roman", Font.PLAIN, 17));
-			btnClearAllEntries.setBounds(421, 379, 194, 37);
-			panel.add(btnClearAllEntries);
-			
 			JButton btnStart = new JButton("Start");
 			btnStart.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -374,18 +362,6 @@ public class CPUscheduling extends JFrame {
 				}
 			});
 			panel_1.add(btnmain);
-			
-			JButton pbtnclear = new JButton("Clear all input");
-			pbtnclear.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				//	table_1.clearSelection();
-				//	chartPanel2.removeAll();
-				
-				}
-			});
-			pbtnclear.setFont(new Font("Times New Roman", Font.PLAIN, 17));
-			pbtnclear.setBounds(420, 379, 194, 37);
-			panel_1.add(pbtnclear);
 			
 			JButton pbtnstart = new JButton("Start");
 			pbtnstart.addActionListener(new ActionListener() {
